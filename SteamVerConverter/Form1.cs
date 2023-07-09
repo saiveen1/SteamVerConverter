@@ -1,8 +1,12 @@
 ﻿using SteamVerConverter.Service;
+using SteamVerConverter.services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SteamVerConverter.Service.DialogService;
+using static SteamVerConverter.Service.FileService;
 
 namespace SteamVerConverter
 {
@@ -18,32 +22,29 @@ namespace SteamVerConverter
             StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private void GetSteamVersion(string steamPath)
+        private void RefreshSteamVersionText(string steamPath)
         {
-            // 需要转换成Version
-            var steamv1Ver = new Version("7.56.33.36");
             // var steamv2Ver = new Version("8.9.11.89");
-            var steamv3Ver = new Version("8.14.49.6");
-            steamVersion = FileService.GetFileVersion(steamPath);
-            this.lsteamVer.Text = steamVersion.ToString();
+
+            var steamVerInfo = SteamService.GetSteamVersion(steamPath);
+
+            this.lsteamVer.Text = steamVerInfo["Version"];
             this.lsteamVer.Visible = true;
-            if (steamVersion <= steamv1Ver)
-                this.lsteamVerNum.Text = "V1";
-            else if (steamVersion > steamv1Ver && steamVersion < steamv3Ver)
-                this.lsteamVerNum.Text = "V2";
-            else if (steamVersion >= steamv3Ver)
-                this.lsteamVerNum.Text = "V3";
+            this.lsteamVerNum.Text = steamVerInfo["VerNum"];
             this.lsteamVerNum.Visible = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // DialogService.ShowNonClickableMessageBox("这是一个无法点击的消息框", "提示", 10000);
+            // NonClickableMessageBox.Show("这是一个无法点击的消息框", "提示", 3000);
+
             if (string.IsNullOrEmpty(steamPath))
                 MessageBox.Show("Steam路径获取失败，请手动获取", "错误");
             else
             {
                 this.tSteamDir.Text = Path.GetDirectoryName(steamPath);
-                GetSteamVersion(steamPath);
+                RefreshSteamVersionText(steamPath);
             }
 
             this.tVersionDir.Text = Environment.CurrentDirectory;
@@ -88,7 +89,7 @@ namespace SteamVerConverter
             if (File.Exists(t))
             {
                 steamPath = t;
-                GetSteamVersion(steamPath);
+                RefreshSteamVersionText(steamPath);
             }
             else
             {
@@ -99,11 +100,11 @@ namespace SteamVerConverter
             //steam.exe文件
             //if (!string.IsNullOrEmpty(this.tSteamDir.Text))
             //    if(File.Exists(this.tSteamDir.Text))
-            //        GetSteamVersion(this.tSteamDir.Text);
+            //        GetSteamVNum(this.tSteamDir.Text);
         }
 
         //获取程序运行目录的steam版本文件.zip
-        private void tversionDir_TextChanged(object sender, EventArgs e)
+        private void tVerDir_TextChanged(object sender, EventArgs e)
         {
             cbReplaceItems.Items.Clear();
             try
@@ -122,7 +123,7 @@ namespace SteamVerConverter
             }
         }
 
-        private void btnChange_Click(object sender, EventArgs e)
+        private async void btnChange_ClickAsync(object sender, EventArgs e)
         {
             if(string.IsNullOrEmpty(steamPath))
                 MessageBox.Show("未找到steam.exe, 请确认steam路径是否正确", "Error");
@@ -138,17 +139,65 @@ namespace SteamVerConverter
             if (result == DialogResult.Yes)
                 try
                 {
-                    if (FileService.ZipFiles(zipFilePath, dstPath))
-                        MessageBox.Show("替换完成，如无法运行保留如下\n" +
+                    ProcessService.KillProcesses("steam.exe", 3000);
+                    // filePath 是要被处理的文件由主函数调用，这里是steam.exe
+                    void fileProcessingDelegate(string filePath)
+                    {
+                        // 在这里执行特定的文件操作逻辑
+                        Version fileVersion = FileService.GetFileVersion(filePath);
+                        Version targetVersion = new Version(SteamService.steamv3Version); // 目标版本
+
+                        // 如果版本大于等于V3 则删除steam.cfg 保持最新状态
+                        if (fileVersion >= targetVersion)
+                        {
+                            string directoryPath = Path.GetDirectoryName(filePath);
+                            var msg = $"即将完成替换v3，是否暂停steam更新？" +
+                                $"\n如果后续需要保持steam为最新，删除steam.cfg即可";
+                            var result = MessageBox.Show(msg, "提示", MessageBoxButtons.YesNo);
+
+                            if (result == DialogResult.No)
+                            {
+                                string cfgFilePath = Path.Combine(directoryPath, "steam.cfg");
+
+                                if (File.Exists(cfgFilePath))
+                                {
+                                    File.Delete(cfgFilePath);
+                                    Console.WriteLine("Deleted steam.cfg file.");
+                                }
+                            }
+                        }
+                    }
+
+                    // 创建进度报告对象
+                    var progress = new Progress<int>(value =>
+                    {
+                        // 更新进度条的值
+                        progressBar1.Value = value;
+                    });
+
+                    // 调用 ZipFiles 方法，并使用进度报告对象
+                    bool zipResult = await Task.Run(() => ZipFiles(zipFilePath, dstPath, fileProcessingDelegate, progress));
+
+                    if(zipResult)
+                        msg = "替换完成，如无法运行保留如下\n" +
                             "文件：steam.exe\n" +
                             "文件夹: userdata steamapps\n" +
-                            "其它删除后重新打开steam.exe即可重新安装最新。");
-
+                            "其它删除后重新打开steam.exe即可重新安装最新。";
+                    else
+                        msg = "文件替换操作失败\n" +
+                            "请以管理员运行后再试\n" +
+                            "如再次失败，手动解压。";
+                    NonClickableMessageBox.Show(msg + "\n\n10s后自动关闭",
+                        "10s后自动关闭",
+                        10000);
+                    // 关闭窗口
                     this.Close();
                 }
                 catch (Exception exp)
                 {
-                    MessageBox.Show(exp.ToString(), "出错，联系QQ：");
+                    FileService.WriteError(exp);
+                    ProcessService.StartExplorerReturn(Environment.CurrentDirectory, "");
+                    MessageBox.Show(exp.ToString(), "未知错误, 请将error.log发送qq：1186565583");
                 }
 
         }

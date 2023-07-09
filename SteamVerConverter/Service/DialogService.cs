@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace SteamVerConverter.Service
 {
@@ -84,5 +83,51 @@ namespace SteamVerConverter.Service
             return string.Empty;
         }
 
+        public class NonClickableMessageBox : Form
+        {
+            private static NonClickableMessageBox messageBox;
+            private static System.Threading.Timer timer;
+
+            private NonClickableMessageBox(string message, string caption, int timeout)
+            {
+                Size = new Size(600, 600);
+                StartPosition = FormStartPosition.CenterScreen;
+                ShowInTaskbar = false;
+                ControlBox = false;
+                MinimizeBox = false;
+                MaximizeBox = false;
+                FormBorderStyle = FormBorderStyle.FixedSingle;
+
+                var label = new Label
+                {
+                    Text = message,
+                    AutoSize = false, // 禁用自动调整大小
+                    TextAlign = ContentAlignment.TopLeft,
+                    Dock = DockStyle.Fill,
+                    Font = new Font("Arial", 30, FontStyle.Bold), // 设置字体为 Arial，大小为 12，加粗
+                    MaximumSize = new Size(600, 0), // 设置最大宽度，以便自动换行
+                    AutoEllipsis = true, // 超过最大宽度时显示省略号
+                };
+
+                var panel = new Panel
+                {
+                    Dock = DockStyle.Fill
+                };
+                panel.Controls.Add(label);
+                Controls.Add(panel);
+
+                timer = new System.Threading.Timer(state =>
+                {
+                    Close();
+                    timer.Dispose();
+                }, null, timeout, Timeout.Infinite);
+            }
+
+            public static void Show(string message, string caption, int timeout)
+            {
+                messageBox = new NonClickableMessageBox(message, caption, timeout);
+                messageBox.ShowDialog();
+            }
+        }
     }
 }

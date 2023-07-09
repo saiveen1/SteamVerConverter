@@ -45,6 +45,7 @@
             this.tutorialUrl = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
             this.versionUrl = new System.Windows.Forms.LinkLabel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // folderButton
@@ -115,14 +116,14 @@
             this.tVersionDir.Name = "tVersionDir";
             this.tVersionDir.Size = new System.Drawing.Size(354, 70);
             this.tVersionDir.TabIndex = 26;
-            this.tVersionDir.TextChanged += new System.EventHandler(this.tversionDir_TextChanged);
+            this.tVersionDir.TextChanged += new System.EventHandler(this.tVerDir_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 15.75F);
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(8, 308);
+            this.label3.Location = new System.Drawing.Point(8, 352);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(126, 21);
             this.label3.TabIndex = 28;
@@ -189,7 +190,7 @@
             this.cbReplaceItems.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbReplaceItems.Font = new System.Drawing.Font("宋体", 15.75F);
             this.cbReplaceItems.FormattingEnabled = true;
-            this.cbReplaceItems.Location = new System.Drawing.Point(140, 305);
+            this.cbReplaceItems.Location = new System.Drawing.Point(140, 349);
             this.cbReplaceItems.Name = "cbReplaceItems";
             this.cbReplaceItems.Size = new System.Drawing.Size(144, 29);
             this.cbReplaceItems.TabIndex = 34;
@@ -198,13 +199,13 @@
             // 
             this.btnChange.Font = new System.Drawing.Font("宋体", 12F);
             this.btnChange.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnChange.Location = new System.Drawing.Point(286, 301);
+            this.btnChange.Location = new System.Drawing.Point(286, 345);
             this.btnChange.Name = "btnChange";
             this.btnChange.Size = new System.Drawing.Size(80, 35);
             this.btnChange.TabIndex = 35;
             this.btnChange.Text = "替换";
             this.btnChange.UseVisualStyleBackColor = true;
-            this.btnChange.Click += new System.EventHandler(this.btnChange_Click);
+            this.btnChange.Click += new System.EventHandler(this.btnChange_ClickAsync);
             // 
             // tutorialUrl
             // 
@@ -241,11 +242,19 @@
             this.versionUrl.Text = "版本下载";
             this.versionUrl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.versionUrl_LinkClicked);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 313);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(350, 26);
+            this.progressBar1.TabIndex = 39;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(375, 340);
+            this.ClientSize = new System.Drawing.Size(375, 382);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.versionUrl);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.tutorialUrl);
@@ -292,6 +301,7 @@
         private System.Windows.Forms.LinkLabel tutorialUrl;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.LinkLabel versionUrl;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
