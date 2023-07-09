@@ -30,18 +30,21 @@
         {
             this.folderButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.tsteamDir = new System.Windows.Forms.TextBox();
+            this.tSteamDir = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.tversionDir = new System.Windows.Forms.TextBox();
+            this.tVersionDir = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lsteamVer = new System.Windows.Forms.Label();
             this.lsteamVerNum = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.cbreplaceItems = new System.Windows.Forms.ComboBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.cbReplaceItems = new System.Windows.Forms.ComboBox();
+            this.btnChange = new System.Windows.Forms.Button();
+            this.tutorialUrl = new System.Windows.Forms.LinkLabel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.versionUrl = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // folderButton
@@ -67,17 +70,17 @@
             this.label2.TabIndex = 22;
             this.label2.Text = "Steam路径:";
             // 
-            // tsteamDir
+            // tSteamDir
             // 
-            this.tsteamDir.AcceptsTab = true;
-            this.tsteamDir.BackColor = System.Drawing.SystemColors.Info;
-            this.tsteamDir.Font = new System.Drawing.Font("宋体", 15.75F);
-            this.tsteamDir.Location = new System.Drawing.Point(12, 43);
-            this.tsteamDir.Multiline = true;
-            this.tsteamDir.Name = "tsteamDir";
-            this.tsteamDir.Size = new System.Drawing.Size(354, 70);
-            this.tsteamDir.TabIndex = 23;
-            this.tsteamDir.TextChanged += new System.EventHandler(this.steamDirText_TextChanged);
+            this.tSteamDir.AcceptsTab = true;
+            this.tSteamDir.BackColor = System.Drawing.SystemColors.Info;
+            this.tSteamDir.Font = new System.Drawing.Font("宋体", 15.75F);
+            this.tSteamDir.Location = new System.Drawing.Point(12, 43);
+            this.tSteamDir.Multiline = true;
+            this.tSteamDir.Name = "tSteamDir";
+            this.tSteamDir.Size = new System.Drawing.Size(354, 70);
+            this.tSteamDir.TabIndex = 23;
+            this.tSteamDir.TextChanged += new System.EventHandler(this.steamDirText_TextChanged);
             // 
             // button1
             // 
@@ -102,24 +105,24 @@
             this.label1.TabIndex = 25;
             this.label1.Text = "版本路径:";
             // 
-            // tversionDir
+            // tVersionDir
             // 
-            this.tversionDir.AcceptsTab = true;
-            this.tversionDir.BackColor = System.Drawing.SystemColors.Info;
-            this.tversionDir.Font = new System.Drawing.Font("宋体", 15.75F);
-            this.tversionDir.Location = new System.Drawing.Point(12, 161);
-            this.tversionDir.Multiline = true;
-            this.tversionDir.Name = "tversionDir";
-            this.tversionDir.Size = new System.Drawing.Size(354, 70);
-            this.tversionDir.TabIndex = 26;
-            this.tversionDir.TextChanged += new System.EventHandler(this.tversionDir_TextChanged);
+            this.tVersionDir.AcceptsTab = true;
+            this.tVersionDir.BackColor = System.Drawing.SystemColors.Info;
+            this.tVersionDir.Font = new System.Drawing.Font("宋体", 15.75F);
+            this.tVersionDir.Location = new System.Drawing.Point(12, 161);
+            this.tVersionDir.Multiline = true;
+            this.tVersionDir.Name = "tVersionDir";
+            this.tVersionDir.Size = new System.Drawing.Size(354, 70);
+            this.tVersionDir.TabIndex = 26;
+            this.tVersionDir.TextChanged += new System.EventHandler(this.tversionDir_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 15.75F);
             this.label3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label3.Location = new System.Drawing.Point(8, 281);
+            this.label3.Location = new System.Drawing.Point(8, 308);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(126, 21);
             this.label3.TabIndex = 28;
@@ -181,34 +184,73 @@
             this.label6.TabIndex = 33;
             this.label6.Text = "|";
             // 
-            // cbreplaceItems
+            // cbReplaceItems
             // 
-            this.cbreplaceItems.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbreplaceItems.Font = new System.Drawing.Font("宋体", 15.75F);
-            this.cbreplaceItems.FormattingEnabled = true;
-            this.cbreplaceItems.Location = new System.Drawing.Point(140, 278);
-            this.cbreplaceItems.Name = "cbreplaceItems";
-            this.cbreplaceItems.Size = new System.Drawing.Size(144, 29);
-            this.cbreplaceItems.TabIndex = 34;
+            this.cbReplaceItems.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbReplaceItems.Font = new System.Drawing.Font("宋体", 15.75F);
+            this.cbReplaceItems.FormattingEnabled = true;
+            this.cbReplaceItems.Location = new System.Drawing.Point(140, 305);
+            this.cbReplaceItems.Name = "cbReplaceItems";
+            this.cbReplaceItems.Size = new System.Drawing.Size(144, 29);
+            this.cbReplaceItems.TabIndex = 34;
             // 
-            // button2
+            // btnChange
             // 
-            this.button2.Font = new System.Drawing.Font("宋体", 12F);
-            this.button2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.button2.Location = new System.Drawing.Point(286, 274);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(80, 35);
-            this.button2.TabIndex = 35;
-            this.button2.Text = "替换";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnChange.Font = new System.Drawing.Font("宋体", 12F);
+            this.btnChange.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnChange.Location = new System.Drawing.Point(286, 301);
+            this.btnChange.Name = "btnChange";
+            this.btnChange.Size = new System.Drawing.Size(80, 35);
+            this.btnChange.TabIndex = 35;
+            this.btnChange.Text = "替换";
+            this.btnChange.UseVisualStyleBackColor = true;
+            this.btnChange.Click += new System.EventHandler(this.btnChange_Click);
+            // 
+            // tutorialUrl
+            // 
+            this.tutorialUrl.AutoSize = true;
+            this.tutorialUrl.Font = new System.Drawing.Font("宋体", 15.75F);
+            this.tutorialUrl.Location = new System.Drawing.Point(8, 277);
+            this.tutorialUrl.Name = "tutorialUrl";
+            this.tutorialUrl.Size = new System.Drawing.Size(52, 21);
+            this.tutorialUrl.TabIndex = 36;
+            this.tutorialUrl.TabStop = true;
+            this.tutorialUrl.Text = "教程";
+            this.tutorialUrl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.tutorialUrl_LinkClicked);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("宋体", 15.75F);
+            this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label7.Location = new System.Drawing.Point(159, 277);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(204, 21);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "交流群：1908912779";
+            // 
+            // versionUrl
+            // 
+            this.versionUrl.AutoSize = true;
+            this.versionUrl.Font = new System.Drawing.Font("宋体", 15.75F);
+            this.versionUrl.Location = new System.Drawing.Point(66, 277);
+            this.versionUrl.Name = "versionUrl";
+            this.versionUrl.Size = new System.Drawing.Size(94, 21);
+            this.versionUrl.TabIndex = 38;
+            this.versionUrl.TabStop = true;
+            this.versionUrl.Text = "版本下载";
+            this.versionUrl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.versionUrl_LinkClicked);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.cbreplaceItems);
+            this.ClientSize = new System.Drawing.Size(375, 340);
+            this.Controls.Add(this.versionUrl);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.tutorialUrl);
+            this.Controls.Add(this.btnChange);
+            this.Controls.Add(this.cbReplaceItems);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.lsteamVerNum);
             this.Controls.Add(this.lsteamVer);
@@ -217,12 +259,14 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.tversionDir);
+            this.Controls.Add(this.tVersionDir);
             this.Controls.Add(this.folderButton);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.tsteamDir);
+            this.Controls.Add(this.tSteamDir);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Steam版本转换";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -233,18 +277,21 @@
 
         private System.Windows.Forms.Button folderButton;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox tsteamDir;
+        private System.Windows.Forms.TextBox tSteamDir;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tversionDir;
+        private System.Windows.Forms.TextBox tVersionDir;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label lsteamVer;
         private System.Windows.Forms.Label lsteamVerNum;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox cbreplaceItems;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox cbReplaceItems;
+        private System.Windows.Forms.Button btnChange;
+        private System.Windows.Forms.LinkLabel tutorialUrl;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.LinkLabel versionUrl;
     }
 }
 

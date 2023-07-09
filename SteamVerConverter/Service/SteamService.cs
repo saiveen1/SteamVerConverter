@@ -12,11 +12,17 @@ namespace SteamVerConverter.Service
             if (key is null)
                 return String.Empty;
 
-            var steamFolder = key.GetValue("SteamPath").ToString();
-            if (string.IsNullOrEmpty(steamFolder) || !Directory.Exists(steamFolder))
-                return String.Empty;
+            //var steamFolder = key.GetValue("SteamPath").ToString();
+            //if (string.IsNullOrEmpty(steamFolder) || !Directory.Exists(steamFolder))
+            //    return String.Empty;
 
-            return Path.GetFullPath(Path.Combine(steamFolder, "steam.exe")); ;
+            //return Path.GetFullPath(Path.Combine(steamFolder, "steam.exe"));
+
+            var steamPath = key.GetValue("SteamExe").ToString(); 
+            if(File.Exists(steamPath))
+                return steamPath;
+            else
+                return String.Empty;
         }
     }
 }
